@@ -1,8 +1,13 @@
+"use client";
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
+  const pathname = usePathname();
+  if (pathname?.startsWith('/admin') || pathname?.startsWith('/staff') || pathname?.startsWith('/customer') || pathname?.startsWith('/client')) return null;
+
   return (
     <>
     <header id="header_main" className="header header-fixed">

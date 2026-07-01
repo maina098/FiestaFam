@@ -17,9 +17,17 @@ import { MaintenanceModule } from './maintenance/maintenance.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { ReportsModule } from './reports/reports.module';
 import { SettingsModule } from './settings/settings.module';
+import { GuestsModule } from './guests/guests.module';
+import { HotelReservationsModule } from './hotel-reservations/hotel-reservations.module';
+import { InvoicesModule } from './invoices/invoices.module';
+import { PaymentsModule } from './payments/payments.module';
+import { EmployeesModule } from './employees/employees.module';
+import { SuppliersModule } from './suppliers/suppliers.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { AuditLogsModule } from './audit-logs/audit-logs.module';
 
 @Module({
-  imports: [PrismaModule, MenuModule, ReservationsModule, OrdersModule, DashboardModule, AuthModule, UsersModule, HotelsModule, RoomsModule, CheckinsModule, CheckoutsModule, HousekeepingModule, MaintenanceModule, InventoryModule, ReportsModule, SettingsModule],
+  imports: [PrismaModule, MenuModule, ReservationsModule, OrdersModule, DashboardModule, AuthModule, UsersModule, HotelsModule, RoomsModule, CheckinsModule, CheckoutsModule, HousekeepingModule, MaintenanceModule, InventoryModule, ReportsModule, SettingsModule, GuestsModule, HotelReservationsModule, InvoicesModule, PaymentsModule, EmployeesModule, SuppliersModule, NotificationsModule, AuditLogsModule],
   controllers: [AppController],
   providers: [AppService],
 })

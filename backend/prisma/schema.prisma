@@ -14,17 +14,35 @@ model User {
   email     String   @unique
   password  String
   name      String?
+  phone     String?
   role      Role     @default(CUSTOMER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  orders    Order[]
+  status        UserStatus     @default(ACTIVE)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  orders        Order[]
+  notifications Notification[]
+  auditLogs     AuditLog[]
 }
 
 enum Role {
+  SUPER_ADMIN
+  HOTEL_MANAGER
+  RECEPTIONIST
+  HOUSEKEEPING
+  ACCOUNTANT
+  RESTAURANT_STAFF
   CUSTOMER
+  CLIENT
   ADMIN
   STAFF
 }
+
+enum UserStatus {
+  ACTIVE
+  DISABLED
+}
+
+// ---- Existing Restaurant POS Models ----
 
 model Category {
   id        String     @id @default(uuid())
@@ -49,6 +67,7 @@ model MenuItem {
   updatedAt   DateTime    @updatedAt
 }
 
+// Table reservation for restaurant
 model Reservation {
   id        String   @id @default(uuid())
   name      String
@@ -74,6 +93,8 @@ model Order {
   status      OrderStatus @default(PENDING)
   userId      String?
   user        User?       @relation(fields: [userId], references: [id])
+  invoiceId   String?
+  invoice     Invoice?    @relation(fields: [invoiceId], references: [id])
   items       OrderItem[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
@@ -94,4 +115,229 @@ model OrderItem {
   price      Float
   order      Order    @relation(fields: [orderId], references: [id])
   menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+}
+
+// ---- New Hotel Management Models ----
+
+model Guest {
+  id             String             @id @default(uuid())
+  firstName      String
+  lastName       String
+  email          String?            @unique
+  phone          String
+  nationalId     String?
+  passportNumber String?
+  address        String?
+  country        String?
+  reservations   HotelReservation[]
+  invoices       Invoice[]
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+}
+
+model RoomCategory {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  basePrice   Float
+  capacity    Int
+  rooms       Room[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Room {
+  id           String             @id @default(uuid())
+  roomNumber   String             @unique
+  floor        String?
+  categoryId   String
+  category     RoomCategory       @relation(fields: [categoryId], references: [id])
+  price        Float?             // Optional override of category base price
+  status       RoomStatus         @default(AVAILABLE)
+  reservations HotelReservation[]
+  cleaningTasks CleaningTask[]
+  maintenanceTasks Maintenance[]
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+}
+
+enum RoomStatus {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+  CLEANING
+  MAINTENANCE
+}
+
+model HotelReservation {
+  id            String             @id @default(uuid())
+  guestId       String
+  guest         Guest              @relation(fields: [guestId], references: [id])
+  roomId        String
+  room          Room               @relation(fields: [roomId], references: [id])
+  checkInDate   DateTime
+  checkOutDate  DateTime
+  status        BookingStatus      @default(PENDING)
+  paymentStatus PaymentStatus      @default(UNPAID)
+  invoices      Invoice[]
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+  CANCELLED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PARTIAL
+  PAID
+  REFUNDED
+}
+
+model Invoice {
+  id            String            @id @default(uuid())
+  guestId       String
+  guest         Guest             @relation(fields: [guestId], references: [id])
+  reservationId String?
+  reservation   HotelReservation? @relation(fields: [reservationId], references: [id])
+  amount        Float
+  tax           Float             @default(0)
+  discount      Float             @default(0)
+  status        PaymentStatus     @default(UNPAID)
+  payments      Payment[]
+  restaurantOrders Order[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  invoiceId     String
+  invoice       Invoice       @relation(fields: [invoiceId], references: [id])
+  amount        Float
+  method        PaymentMethod
+  status        PaymentStatus @default(PAID)
+  transactionId String?
+  createdAt     DateTime      @default(now())
+}
+
+enum PaymentMethod {
+  CASH
+  CREDIT_CARD
+  MOBILE_MONEY
+  BANK_TRANSFER
+}
+
+// ---- Staff & Operations Models ----
+
+model Employee {
+  id         String   @id @default(uuid())
+  name       String
+  department String
+  position   String
+  salary     Float?
+  phone      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  tasks      CleaningTask[]
+}
+
+model CleaningTask {
+  id         String   @id @default(uuid())
+  roomId     String
+  room       Room     @relation(fields: [roomId], references: [id])
+  staffId    String?
+  staff      Employee? @relation(fields: [staffId], references: [id])
+  status     CleaningStatus @default(PENDING)
+  date       DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+enum CleaningStatus {
+  PENDING
+  CLEANING
+  COMPLETED
+}
+
+model Maintenance {
+  id         String   @id @default(uuid())
+  roomId     String
+  room       Room     @relation(fields: [roomId], references: [id])
+  issue      String
+  priority   PriorityLevel @default(MEDIUM)
+  status     MaintenanceStatus @default(PENDING)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+enum PriorityLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum MaintenanceStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+}
+
+model Supplier {
+  id         String   @id @default(uuid())
+  name       String
+  company    String
+  phone      String?
+  email      String?
+  inventory  Inventory[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Inventory {
+  id         String   @id @default(uuid())
+  itemName   String
+  category   String
+  quantity   Int
+  unit       String
+  supplierId String?
+  supplier   Supplier? @relation(fields: [supplierId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// ---- Analytics & Auditing Models ----
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String?
+  user      User?            @relation(fields: [userId], references: [id])
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+}
+
+enum NotificationType {
+  BOOKING
+  PAYMENT
+  SYSTEM
+  MAINTENANCE
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  details   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
 }

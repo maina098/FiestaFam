@@ -12,24 +12,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DashboardController = void 0;
 const common_1 = require("@nestjs/common");
 const dashboard_service_1 = require("./dashboard.service");
+const client_1 = require("@prisma/client");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const roles_guard_1 = require("../auth/roles.guard");
+const roles_decorator_1 = require("../auth/roles.decorator");
 let DashboardController = class DashboardController {
     dashboardService;
     constructor(dashboardService) {
         this.dashboardService = dashboardService;
     }
-    getStats() {
-        return this.dashboardService.getStats();
+    getFullStats() {
+        return this.dashboardService.getFullDashboardStats();
     }
 };
 exports.DashboardController = DashboardController;
 __decorate([
     (0, common_1.Get)('stats'),
+    (0, roles_decorator_1.Roles)(client_1.Role.SUPER_ADMIN, client_1.Role.HOTEL_MANAGER, client_1.Role.ACCOUNTANT),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], DashboardController.prototype, "getStats", null);
+], DashboardController.prototype, "getFullStats", null);
 exports.DashboardController = DashboardController = __decorate([
     (0, common_1.Controller)('dashboard'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     __metadata("design:paramtypes", [dashboard_service_1.DashboardService])
 ], DashboardController);
 //# sourceMappingURL=dashboard.controller.js.map

@@ -17,31 +17,45 @@ let OrdersService = class OrdersService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    create(createOrderDto) {
-        return this.prisma.order.create({
-            data: createOrderDto,
+    async create(data) {
+        return this.prisma.order.create({ data });
+    }
+    async chargeToRoom(orderData, invoiceId) {
+        const invoice = await this.prisma.invoice.findUnique({ where: { id: invoiceId } });
+        if (!invoice)
+            throw new common_1.BadRequestException('Invoice not found');
+        return this.prisma.$transaction(async (prisma) => {
+            const order = await prisma.order.create({
+                data: {
+                    ...orderData,
+                    invoiceId
+                }
+            });
+            await prisma.invoice.update({
+                where: { id: invoiceId },
+                data: {
+                    amount: { increment: order.totalAmount }
+                }
+            });
+            return order;
         });
     }
-    findAll() {
+    async findAll() {
         return this.prisma.order.findMany({
-            include: { items: { include: { menuItem: true } } },
+            include: { items: { include: { menuItem: true } }, invoice: true },
+            orderBy: { createdAt: 'desc' }
         });
     }
-    findOne(id) {
+    async findOne(id) {
         return this.prisma.order.findUnique({
             where: { id },
-            include: { items: { include: { menuItem: true } } },
+            include: { items: { include: { menuItem: true } }, invoice: true },
         });
     }
-    update(id, updateOrderDto) {
+    async update(id, data) {
         return this.prisma.order.update({
             where: { id },
-            data: updateOrderDto,
-        });
-    }
-    remove(id) {
-        return this.prisma.order.delete({
-            where: { id },
+            data,
         });
     }
 };
