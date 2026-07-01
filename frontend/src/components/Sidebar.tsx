@@ -17,13 +17,7 @@ import {
 
 const navigation = [
   { name: 'Super Admin', href: '/admin/super-admin', icon: LayoutDashboard },
-  { name: 'Hotel Manager', href: '/admin/manager', icon: Building2 },
-  { name: 'Reception', href: '/admin/reception', icon: Users },
-  { name: 'Housekeeping', href: '/admin/housekeeping', icon: PaintBucket },
-  { name: 'Maintenance', href: '/admin/maintenance', icon: Wrench },
-  { name: 'Inventory', href: '/admin/inventory', icon: PackageSearch },
-  { name: 'Restaurant (POS)', href: '/admin/restaurant', icon: Utensils },
-  { name: 'Accountant', href: '/admin/accountant', icon: Wallet },
+  { name: 'User Provisioning', href: '/admin/users', icon: Users },
   { name: 'Reports', href: '/admin/reports', icon: LineChart },
   { name: 'Settings', href: '/admin/settings', icon: Settings },
 ];
