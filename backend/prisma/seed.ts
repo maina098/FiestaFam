@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
 import 'dotenv/config';
+import * as bcrypt from 'bcrypt';
 
 const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({ connectionString });
@@ -180,6 +181,23 @@ function generateSlug(name: string) {
 }
 
 async function main() {
+  console.log('Seeding admin user...');
+  const hashedPassword = await bcrypt.hash('Ande001rson', 10);
+  
+  await prisma.user.upsert({
+    where: { email: 'redmianderson73@gmail.com' },
+    update: {
+      password: hashedPassword,
+      role: 'ADMIN',
+    },
+    create: {
+      email: 'redmianderson73@gmail.com',
+      password: hashedPassword,
+      role: 'ADMIN',
+      name: 'Admin User',
+    },
+  });
+
   console.log('Clearing old menu items...');
   await prisma.orderItem.deleteMany({}); // Delete related order items to avoid foreign key constraints
   await prisma.menuItem.deleteMany({});

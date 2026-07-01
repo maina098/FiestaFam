@@ -1,0 +1,12 @@
+npx nest g module auth
+npx nest g module users
+npx nest g module hotels
+npx nest g module rooms
+npx nest g module reservations
+npx nest g module checkins
+npx nest g module checkouts
+npx nest g module housekeeping
+npx nest g module maintenance
+npx nest g module inventory
+npx nest g module reports
+npx nest g module settings
