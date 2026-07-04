@@ -8,7 +8,9 @@ export declare class UsersController {
         email: string;
         password: string;
         name: string | null;
+        phone: string | null;
         role: import("@prisma/client").$Enums.Role;
+        status: import("@prisma/client").$Enums.UserStatus;
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -17,7 +19,9 @@ export declare class UsersController {
         email: string;
         password: string;
         name: string | null;
+        phone: string | null;
         role: import("@prisma/client").$Enums.Role;
+        status: import("@prisma/client").$Enums.UserStatus;
         createdAt: Date;
         updatedAt: Date;
     }[]>;

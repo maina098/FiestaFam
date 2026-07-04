@@ -4,20 +4,20 @@ export declare class DashboardController {
     constructor(dashboardService: DashboardService);
     getFullStats(): Promise<{
         occupancy: {
-            totalRooms: any;
-            availableRooms: any;
-            occupiedRooms: any;
-            reservedRooms: any;
-            maintenanceRooms: any;
+            totalRooms: number;
+            availableRooms: number;
+            occupiedRooms: number;
+            reservedRooms: number;
+            maintenanceRooms: number;
         };
         revenue: {
-            totalRevenue: any;
+            totalRevenue: number;
         };
         bookings: {
-            totalReservations: any;
-            completedBookings: any;
-            cancelledBookings: any;
-            pendingBookings: any;
+            totalReservations: number;
+            completedBookings: number;
+            cancelledBookings: number;
+            pendingBookings: number;
         };
     }>;
 }

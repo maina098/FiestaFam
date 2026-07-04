@@ -3,37 +3,37 @@ export declare class DashboardService {
     private prisma;
     constructor(prisma: PrismaService);
     getOccupancyStats(): Promise<{
-        totalRooms: any;
-        availableRooms: any;
-        occupiedRooms: any;
-        reservedRooms: any;
-        maintenanceRooms: any;
+        totalRooms: number;
+        availableRooms: number;
+        occupiedRooms: number;
+        reservedRooms: number;
+        maintenanceRooms: number;
     }>;
     getRevenueAnalytics(): Promise<{
-        totalRevenue: any;
+        totalRevenue: number;
     }>;
     getBookingAnalytics(): Promise<{
-        totalReservations: any;
-        completedBookings: any;
-        cancelledBookings: any;
-        pendingBookings: any;
+        totalReservations: number;
+        completedBookings: number;
+        cancelledBookings: number;
+        pendingBookings: number;
     }>;
     getFullDashboardStats(): Promise<{
         occupancy: {
-            totalRooms: any;
-            availableRooms: any;
-            occupiedRooms: any;
-            reservedRooms: any;
-            maintenanceRooms: any;
+            totalRooms: number;
+            availableRooms: number;
+            occupiedRooms: number;
+            reservedRooms: number;
+            maintenanceRooms: number;
         };
         revenue: {
-            totalRevenue: any;
+            totalRevenue: number;
         };
         bookings: {
-            totalReservations: any;
-            completedBookings: any;
-            cancelledBookings: any;
-            pendingBookings: any;
+            totalReservations: number;
+            completedBookings: number;
+            cancelledBookings: number;
+            pendingBookings: number;
         };
     }>;
 }

@@ -6,11 +6,31 @@ export declare class ReportsController {
         totalInvoiced: number;
         totalPaid: number;
         outstanding: number;
-        invoices: any;
+        invoices: ({
+            payments: {
+                id: string;
+                status: import("@prisma/client").$Enums.PaymentStatus;
+                createdAt: Date;
+                invoiceId: string;
+                amount: number;
+                method: import("@prisma/client").$Enums.PaymentMethod;
+                transactionId: string | null;
+            }[];
+        } & {
+            id: string;
+            status: import("@prisma/client").$Enums.PaymentStatus;
+            createdAt: Date;
+            updatedAt: Date;
+            guestId: string;
+            reservationId: string | null;
+            amount: number;
+            tax: number;
+            discount: number;
+        })[];
     }>;
     getHotelReport(): Promise<{
         occupancyRate: string;
-        totalRooms: any;
-        availableRooms: any;
+        totalRooms: number;
+        availableRooms: number;
     }>;
 }
