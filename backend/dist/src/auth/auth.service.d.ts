@@ -15,10 +15,10 @@ export declare class AuthService {
         };
     }>;
     register(data: any): Promise<{
-        name: string | null;
         id: string;
         email: string;
         password: string;
+        name: string | null;
         role: import("@prisma/client").$Enums.Role;
         createdAt: Date;
         updatedAt: Date;

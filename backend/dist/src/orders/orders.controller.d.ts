@@ -5,42 +5,42 @@ export declare class OrdersController {
     constructor(ordersService: OrdersService);
     create(data: Prisma.OrderUncheckedCreateInput): Promise<{
         id: string;
-        totalAmount: number;
-        status: import("@prisma/client").$Enums.OrderStatus;
-        userId: string | null;
         createdAt: Date;
         updatedAt: Date;
+        status: import("@prisma/client").$Enums.OrderStatus;
+        totalAmount: number;
+        userId: string | null;
     }>;
     chargeToRoom(invoiceId: string, data: Prisma.OrderUncheckedCreateInput): Promise<{
         id: string;
-        totalAmount: number;
-        status: import("@prisma/client").$Enums.OrderStatus;
-        userId: string | null;
         createdAt: Date;
         updatedAt: Date;
+        status: import("@prisma/client").$Enums.OrderStatus;
+        totalAmount: number;
+        userId: string | null;
     }>;
     findAll(): Promise<{
         id: string;
-        totalAmount: number;
-        status: import("@prisma/client").$Enums.OrderStatus;
-        userId: string | null;
         createdAt: Date;
         updatedAt: Date;
+        status: import("@prisma/client").$Enums.OrderStatus;
+        totalAmount: number;
+        userId: string | null;
     }[]>;
     findOne(id: string): Promise<{
         id: string;
-        totalAmount: number;
-        status: import("@prisma/client").$Enums.OrderStatus;
-        userId: string | null;
         createdAt: Date;
         updatedAt: Date;
+        status: import("@prisma/client").$Enums.OrderStatus;
+        totalAmount: number;
+        userId: string | null;
     } | null>;
     update(id: string, data: Prisma.OrderUpdateInput): Promise<{
         id: string;
-        totalAmount: number;
-        status: import("@prisma/client").$Enums.OrderStatus;
-        userId: string | null;
         createdAt: Date;
         updatedAt: Date;
+        status: import("@prisma/client").$Enums.OrderStatus;
+        totalAmount: number;
+        userId: string | null;
     }>;
 }
