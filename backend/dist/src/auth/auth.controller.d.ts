@@ -12,10 +12,10 @@ export declare class AuthController {
         };
     }>;
     register(req: any): Promise<{
-        name: string | null;
         id: string;
         email: string;
         password: string;
+        name: string | null;
         phone: string | null;
         role: import("@prisma/client").$Enums.Role;
         status: import("@prisma/client").$Enums.UserStatus;
